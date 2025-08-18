@@ -37,4 +37,5 @@ ENTRYPOINT ["/usr/bin/tini", "--"]
 # Environment variables (set real values in Koyeb)
 # API_ID, API_HASH, BOT_TOKEN, CHAT_ID must be provided at deploy time.
 
-CMD ["python", "bot.py"]
+#CMD ["python", "bot.py"]
+CMD gunicorn --bind 0.0.0.0:8000 app:app & python3 bot.py
