@@ -58,7 +58,7 @@ async def process_files(client):
         await client.send_message("me", "✅ Finished all files.")
 
 # -------- Commands --------
-@app.on_message(filters.command("url"))
+@app.on_message(filters.command("url") & filters.private)
 async def set_url(client, message):
     global url_pattern, start_id, end_id, current_id
     try:
@@ -71,7 +71,7 @@ async def set_url(client, message):
     except:
         await message.reply("❌ Usage: /url <url_pattern_with_{id}> <start_id> <end_id>")
 
-@app.on_message(filters.command("run"))
+@app.on_message(filters.command("run") & filters.private)
 async def run_process(client, message):
     global is_running
     if not url_pattern:
@@ -82,13 +82,13 @@ async def run_process(client, message):
     await message.reply("▶️ Started processing...")
     await process_files(client)
 
-@app.on_message(filters.command("stop"))
+@app.on_message(filters.command("stop") & filters.private)
 async def stop_process(client, message):
     global is_running
     is_running = False
     await message.reply("⏸️ Stopped. Use /continue to resume.")
 
-@app.on_message(filters.command("continue"))
+@app.on_message(filters.command("continue") & filters.private)
 async def continue_process(client, message):
     global is_running
     if not url_pattern:
