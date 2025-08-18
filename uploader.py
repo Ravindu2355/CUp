@@ -3,7 +3,7 @@ from time import time
 from config import CHAT_ID
 
 last_t={
-    text:"",
+    "text":"",
 };
 
 async def upload_with_progress(client, filename, thumb, duration, progress_msg, file_id):
