@@ -44,7 +44,7 @@ async def process_file(client, url, file_id):
         await upload_with_progress(client, filename, thumb, duration, progress_msg, file_id)
         cleanup(filename)
 
-async def process_files(client):
+async def process_files(client, message):
     global current_id, is_running
     while is_running and current_id <= end_id:
         url = url_pattern.format(id=current_id)
@@ -52,10 +52,10 @@ async def process_files(client):
             try:
                 await process_file(client, url, current_id)
             except Exception as e:
-                await client.send_message("me", f"❌ Error {current_id}: {e}")
+                await message.reply(f"❌ Error {current_id}: {e}")
         current_id += 1
     if current_id > end_id:
-        await client.send_message("me", "✅ Finished all files.")
+        await message.reply("✅ Finished all files.")
 
 # -------- Commands --------
 @app.on_message(filters.command("url") & filters.private)
@@ -97,6 +97,6 @@ async def continue_process(client, message):
         return await message.reply("⚡ Already running.")
     is_running = True
     await message.reply(f"▶️ Resuming from ID {current_id}...")
-    await process_files(client)
+    await process_files(client, message)
 
 app.run()
