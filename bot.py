@@ -80,7 +80,7 @@ async def run_process(client, message):
         return await message.reply("⚡ Already running.")
     is_running = True
     await message.reply("▶️ Started processing...")
-    await process_files(client)
+    await process_files(client, message)
 
 @app.on_message(filters.command("stop") & filters.private)
 async def stop_process(client, message):
