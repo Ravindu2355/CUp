@@ -1,4 +1,4 @@
-import os
+import os, asyncio
 import requests
 from pyrogram import Client, filters
 from config import API_ID, API_HASH, BOT_TOKEN
@@ -54,6 +54,7 @@ async def process_files(client, message):
             except Exception as e:
                 await message.reply(f"❌ Error {current_id}: {e}")
         current_id += 1
+        await asyncio.sleep(3)
     if current_id > end_id:
         await message.reply("✅ Finished all files.")
 
