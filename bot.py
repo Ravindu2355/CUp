@@ -99,4 +99,15 @@ async def continue_process(client, message):
     await message.reply(f"▶️ Resuming from ID {current_id}...")
     await process_files(client, message)
 
+@app.on_message(filters.command("reset") & filters.private)
+async def reset_process(client, message):
+    global is_running, url_pattern, start_id, end_id, current_id
+    url_pattern = None
+    start_id = None
+    end_id = None
+    current_id = None
+    is_running = False
+    await message.reply("Reseted ✅️")
+
+
 app.run()
