@@ -6,6 +6,10 @@ import shutil
 from time import time
 from config import CHAT_ID, MAX_SIZE
 
+last_t={
+    "text":""
+}
+
 def get_file_size(url):
     try:
         r = requests.head(url, timeout=10)
@@ -33,14 +37,17 @@ async def download_file(url, filename, client):
                 percent = downloaded * 100 / total if total else 0
                 speed = downloaded / (time() - start_time + 1)
                 eta = (total - downloaded) / speed if speed > 0 else 0
-                await progress_msg.edit_text(
+                tt = (
                     f"⬇️ **Downloading** `{filename}`\n"
                     f"Progress: {percent:.2f}%\n"
                     f"Size: {downloaded/1024/1024:.2f}MB / {total/1024/1024:.2f}MB\n"
                     f"Speed: {speed/1024/1024:.2f} MB/s\n"
                     f"ETA: {math.ceil(eta)}s"
                 )
-                last_update = time()
+                if tt != last_t["text"]:
+                    last_t["text"] = tt
+                    await progress_msg.edit_text(tt)
+                    last_update = time()
     return progress_msg
 
 def generate_thumb_and_duration(filename):
